@@ -77,6 +77,13 @@ class StoreKitClient: NSObject {
         SKPaymentQueue.default().remove(self)
     }
     
+    // MARK: - User review
+    
+    /// Calls the App Store Rating Alert Controller
+    static func askUserReview() {
+        SKStoreReviewController.requestReview()
+    }
+    
     // MARK: - Private statements
     
     private let delegate: StoreKitClientDelegate
