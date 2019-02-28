@@ -80,7 +80,7 @@ class StoreKitClient: NSObject {
     // MARK: - User review
     
     /// Calls the App Store Rating Alert Controller
-    static func askUserReview() {
+    static func requestReview() {
         SKStoreReviewController.requestReview()
     }
     
