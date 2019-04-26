@@ -1,5 +1,6 @@
 //
 //  StoreKitClient.swift
+//  https://github.com/persiogv/StoreKitClient
 //
 //  Created by Pérsio on 26/01/17.
 //  Copyright © 2017 Persio Vieira. All rights reserved.
@@ -32,6 +33,10 @@ protocol StoreKitClientDelegate {
 
 class StoreKitClient: NSObject {
     
+    private let delegate: StoreKitClientDelegate
+    private let productsRequest: SKProductsRequest
+    private let productIdentifiers: Set<String>
+    
     // MARK: - Initializer
     
     /// Instantiates the StoreKitClient
@@ -44,7 +49,7 @@ class StoreKitClient: NSObject {
         self.productIdentifiers = identifiers
         self.productsRequest = SKProductsRequest(productIdentifiers: identifiers)
     }
-    
+
     // MARK: - Public statements
     
     /// Returns the payments availability
@@ -83,17 +88,10 @@ class StoreKitClient: NSObject {
     static func requestReview() {
         SKStoreReviewController.requestReview()
     }
-    
-    // MARK: - Private statements
-    
-    private let delegate: StoreKitClientDelegate
-    private let productsRequest: SKProductsRequest
-    private let productIdentifiers: Set<String>
 }
 
+// MARK: - Payment transaction observer
 extension StoreKitClient: SKPaymentTransactionObserver {
-    
-    // SKPaymentTransactionObserver stack
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
@@ -112,9 +110,8 @@ extension StoreKitClient: SKPaymentTransactionObserver {
     }
 }
 
+// MARK: - Products request delegate
 extension StoreKitClient: SKProductsRequestDelegate {
-    
-    // SKProductsRequestDelegate stack
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         let validProducts = response.products.filter { productIdentifiers.contains($0.productIdentifier) }
